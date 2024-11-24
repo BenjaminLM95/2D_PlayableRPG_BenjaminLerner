@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,7 +13,11 @@ public class Player_Script : MonoBehaviour
     public MapManagment mmScript;
     public GameObject m;
     public Enemy_Script enScript;
-    public GameObject e; 
+    public GameObject e;
+    public bool myTurn = true;
+    public int movCount;
+    public int movCountMax = 2;
+    public TextMeshProUGUI turnTx;
 
     // Start is called before the first frame update
     void Start()
@@ -21,89 +26,115 @@ public class Player_Script : MonoBehaviour
         player_y = 3;
         myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), player);
         mmScript = m.GetComponent<MapManagment>();
-        enScript = e.GetComponent<Enemy_Script>();  
+        enScript = e.GetComponent<Enemy_Script>();
+        movCount = movCountMax; 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            // The player moves down
-            if(player_x == enScript.enemy_x && player_y - 1 == enScript.enemy_y) 
-            {
-                Debug.Log("Enemy");
-            }
-            else if (checkForCollision(player_x, player_y - 1, '#', mmScript.multidimensionalMap))
-            {
-                Debug.Log("Colision"); 
 
-            }
-            else
+        if (myTurn)
+        {
+            turnTx.gameObject.SetActive(true);
+            turnTx.text = "Is your Turn. Movements left: " + movCount; 
+
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
-                player_y--;
-                restartTileMap();
+                // The player moves down
+                if (player_x == enScript.enemy_x && player_y - 1 == enScript.enemy_y)
+                {
+                    Debug.Log("Enemy");
+                }
+                else if (checkForCollision(player_x, player_y - 1, '#', mmScript.multidimensionalMap))
+                {
+                    Debug.Log("Colision");
+
+                }
+                else
+                {
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_y--;
+                    restartTileMap();
+                    movCount--;
+                    Debug.Log("MovReduce: " + movCount);
+                }
             }
+
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                // The player moves up
+                if (player_x == enScript.enemy_x && player_y + 1 == enScript.enemy_y)
+                {
+                    Debug.Log("Enemy");
+                }
+                else if (checkForCollision(player_x, player_y + 1, '#', mmScript.multidimensionalMap))
+                {
+                    Debug.Log("Colision");
+
+                }
+                else
+                {
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_y++;
+                    restartTileMap();
+                    movCount--;
+                    Debug.Log("MovReduce: " + movCount);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                if (player_x - 1 == enScript.enemy_x && player_y == enScript.enemy_y)
+                {
+                    Debug.Log("Enemy");
+                }
+                else if (checkForCollision(player_x - 1, player_y, '#', mmScript.multidimensionalMap))
+                {
+                    Debug.Log("Colision");
+
+                }
+                else
+                {
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_x--;
+                    restartTileMap();
+                    movCount--;
+                    Debug.Log("MovReduce: " + movCount); 
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if (player_x + 1 == enScript.enemy_x && player_y == enScript.enemy_y)
+                {
+                    Debug.Log("Enemy");
+                }
+                else if (checkForCollision(player_x + 1, player_y, '#', mmScript.multidimensionalMap))
+                {
+                    Debug.Log("Colision");
+
+                }
+                else
+                {
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_x++;
+                    restartTileMap();
+                    movCount--;
+                    Debug.Log("MovReduce: " + movCount);
+                }
+            }            
         }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow )) 
+        if (movCount <= 0)
         {
-            // The player moves up
-            if (player_x == enScript.enemy_x && player_y + 1 == enScript.enemy_y)
-            {
-                Debug.Log("Enemy");
-            }
-            else if (checkForCollision(player_x, player_y + 1, '#', mmScript.multidimensionalMap))
-            {
-                Debug.Log("Colision");
-
-            }
-            else
-            {
-                myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
-                player_y++;
-                restartTileMap();
-            }
+            myTurn = false;
+            enScript.enemyTurn = true;
+            Debug.Log("Enemy Turn"); 
+            turnTx.gameObject.SetActive(false);           
+            movCount = movCountMax; 
         }
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            if (player_x - 1 == enScript.enemy_x && player_y == enScript.enemy_y)
-            {
-                Debug.Log("Enemy");
-            }
-            else if (checkForCollision(player_x - 1, player_y, '#', mmScript.multidimensionalMap))
-            {
-                Debug.Log("Colision");
-
-            }
-            else
-            {
-                myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
-                player_x--;
-                restartTileMap();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (player_x + 1 == enScript.enemy_x && player_y == enScript.enemy_y)
-            {
-                Debug.Log("Enemy");
-            }
-            else if (checkForCollision(player_x + 1, player_y, '#', mmScript.multidimensionalMap))
-            {
-                Debug.Log("Colision");
-
-            }
-            else
-            {
-                myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
-                player_x++;
-                restartTileMap();
-            }
-        }
     }
 
     void restartTileMap() 
