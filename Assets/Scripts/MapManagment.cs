@@ -29,9 +29,8 @@ public class MapManagment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mString = GenerateMapString(30, 20);
-        ConvertToMap(mString, multidimensionalMap);
-        ConvertMapToTilemap(mString);
+       
+
     }
 
     public string GenerateMapString(int width, int height)
@@ -52,6 +51,10 @@ public class MapManagment : MonoBehaviour
                     //Where the player is
                     mapMatrix[i, j] = 'P';
 
+                }
+                else if ((j == height/3  || j == 2 * height / 3) && (i > width/5 && i < 4 * width / 5)) 
+                {
+                    mapMatrix[i, j] = '#'; 
                 }
                 else
                     mapMatrix[i, j] = '*';     //mapMatrix[i, j] = GenerateString();
