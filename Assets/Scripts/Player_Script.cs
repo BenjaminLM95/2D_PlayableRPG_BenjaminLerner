@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Player_Script : MonoBehaviour
+public class Player_Script : Actor
 {
     public Tilemap myTilemap;
     public TileBase player;
@@ -18,6 +19,12 @@ public class Player_Script : MonoBehaviour
     public int movCount;
     public int movCountMax = 2;
     public TextMeshProUGUI turnTx;
+    public TextMeshProUGUI statsUpdate; 
+
+    public int lastCheckedHealth;
+    public int lastCheckedXp;
+    public int lastCheckedLevel;    
+    public int checkLives;
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +34,24 @@ public class Player_Script : MonoBehaviour
         myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), player);
         mmScript = m.GetComponent<MapManagment>();
         enScript = e.GetComponent<Enemy_Script>();
-        movCount = movCountMax; 
+        movCount = movCountMax;
+        healthSystem.resetGame(); 
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {       
+        if (lastCheckedHealth != healthSystem.hp || lastCheckedLevel != healthSystem.level || lastCheckedXp != healthSystem.xp)
+        {
+
+            lastCheckedHealth = healthSystem.hp;
+            lastCheckedLevel = healthSystem.level;
+            lastCheckedXp = healthSystem.xp;    
+            
+        }
+
+        statsUpdate.text = healthSystem.ShowHUD(); 
+
 
         if (myTurn)
         {
@@ -53,11 +72,11 @@ public class Player_Script : MonoBehaviour
                 }
                 else
                 {
+                    movCount--;
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_y--;
-                    restartTileMap();
-                    movCount--;
-                    Debug.Log("MovReduce: " + movCount);
+                    restartTileMap();                    
+                    Debug.Log("MovLeft: " + movCount);
                 }
             }
 
@@ -75,11 +94,11 @@ public class Player_Script : MonoBehaviour
                 }
                 else
                 {
+                    movCount--;
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_y++;
-                    restartTileMap();
-                    movCount--;
-                    Debug.Log("MovReduce: " + movCount);
+                    restartTileMap();                    
+                    Debug.Log("MovLeft: " + movCount);
                 }
             }
 
@@ -96,11 +115,11 @@ public class Player_Script : MonoBehaviour
                 }
                 else
                 {
+                    movCount--;
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_x--;
-                    restartTileMap();
-                    movCount--;
-                    Debug.Log("MovReduce: " + movCount); 
+                    restartTileMap();                    
+                    Debug.Log("MovLeft: " + movCount); 
                 }
             }
 
@@ -117,24 +136,30 @@ public class Player_Script : MonoBehaviour
                 }
                 else
                 {
+                    movCount--;
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_x++;
-                    restartTileMap();
-                    movCount--;
-                    Debug.Log("MovReduce: " + movCount);
+                    restartTileMap();                    
+                    Debug.Log("MovLeft: " + movCount);
                 }
-            }            
-        }
+            }
 
-        if (movCount <= 0)
-        {
-            myTurn = false;
-            enScript.enemyTurn = true;
-            Debug.Log("Enemy Turn"); 
-            turnTx.gameObject.SetActive(false);           
-            movCount = movCountMax; 
-        }
+            if (movCount <= 0)
+            {
+                myTurn = false;
+                Invoke("DelayedSetEnemyTurn", 0.5f);
+            }
 
+        }               
+
+    }
+
+    public void DelayedSetEnemyTurn()
+    {
+        turnTx.gameObject.SetActive(false);
+        movCount = movCountMax;
+        enScript.enemyTurn = true;
+        Debug.Log("Enemy Turn");
     }
 
     void restartTileMap() 

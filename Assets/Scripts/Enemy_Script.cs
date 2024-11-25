@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System; 
 
-public class Enemy_Script : MonoBehaviour
+public class Enemy_Script : Actor
 {
 
     public Tilemap myTilemap;
@@ -23,6 +22,7 @@ public class Enemy_Script : MonoBehaviour
     public int enemyMvs;
     public int enemyMvsMax = 2;
     public TextMeshProUGUI enTurnTx;
+    public System.Random rnd = new System.Random(); 
 
     // Start is called before the first frame update
     void Start()
@@ -40,29 +40,23 @@ public class Enemy_Script : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        //Debug.Log("X: " + enemy_x + " Y: " + enemy_y); 
+    {        
 
         if (enemyTurn)
         {
-            enTurnTx.gameObject.SetActive(true);            
-            checkForPlayerPosition();
-            playerDir();
-            System.Threading.Thread.Sleep(1000);
-            myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), null);
-            enemy_x += mvX;
-            enemy_y += mvY;
-            myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), enemy);            
+            enTurnTx.gameObject.SetActive(true);
+            Invoke("enemyMove", 1f);
             enemyMvs--;
 
         }
 
         if(enemyMvs <= 0) 
         {
+            enemyMvs = enemyMvsMax;
             enemyTurn = false;
             plScript.myTurn = true;          
             enTurnTx.gameObject.SetActive(false);
-            enemyMvs = enemyMvsMax; 
+            
         }
 
 
@@ -74,10 +68,20 @@ public class Enemy_Script : MonoBehaviour
         plY = plScript.player_y; 
 
     }
-
+    public void enemyMove() 
+    {
+        checkForPlayerPosition();
+        playerDir();       
+        myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), null);
+        enemy_x += mvX;
+        enemy_y += mvY;
+        myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), enemy);        
+        Debug.Log("enemy moves"); 
+    }
     public void playerDir()
     {
         checkForPlayerPosition();
+        int rNum = rnd.Next(0, 2); 
 
         if (enemy_x > plX)
         {
@@ -121,10 +125,16 @@ public class Enemy_Script : MonoBehaviour
 
         }
 
+        if ((Mathf.Abs(mvX) == 1 && Mathf.Abs(mvY) == 1))
+        {
+            if (rNum == 0)
+                mvY = 0;
+            else
+                mvX = 0; 
 
+            Debug.Log(mvX + " , " + mvY);
 
-
-
+        }
     }
 
 }
