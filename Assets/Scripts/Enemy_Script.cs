@@ -22,13 +22,18 @@ public class Enemy_Script : Actor
     public int enemyMvs;
     public int enemyMvsMax = 2;
     public TextMeshProUGUI enTurnTx;
-    public System.Random rnd = new System.Random(); 
+    public TextMeshProUGUI statsUpdate;
+    public System.Random rnd = new System.Random();
+    public int enemyHP;
+    public int attack; 
 
     // Start is called before the first frame update
     void Start()
     {
         enemy_x = 16;
         enemy_y = 16;
+        enemyHP = 5;
+        attack = 3; 
         enemyMvs = enemyMvsMax; 
         mmScript = m.GetComponent<MapManagment>();
         plScript = p.GetComponent<Player_Script>();
@@ -59,7 +64,7 @@ public class Enemy_Script : Actor
             
         }
 
-
+        statsUpdate.text = "Enemy HP: " + healthSystem.hp;
     }
 
     public void checkForPlayerPosition() 
@@ -132,9 +137,17 @@ public class Enemy_Script : Actor
             else
                 mvX = 0; 
 
-            Debug.Log(mvX + " , " + mvY);
+            Debug.Log(mvX + " , " + mvY);           
 
         }
+
+        if((enemy_x + mvX == plX) && (enemy_y + mvY == plY)) 
+        {
+            mvX = 0;
+            mvY = 0;
+            plScript.healthSystem.TakeDamage(attack); 
+        }
+
     }
 
 }
