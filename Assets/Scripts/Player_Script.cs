@@ -19,7 +19,8 @@ public class Player_Script : Actor
     public int movCount;
     public int movCountMax = 2;
     public TextMeshProUGUI turnTx;
-    public TextMeshProUGUI statsUpdate; 
+    public TextMeshProUGUI statsUpdate;
+    public int attack; 
 
     public int lastCheckedHealth;
     public int lastCheckedXp;
@@ -31,6 +32,7 @@ public class Player_Script : Actor
     {
         player_x = 3;
         player_y = 3;
+        attack = 2; 
         myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), player);
         mmScript = m.GetComponent<MapManagment>();
         enScript = e.GetComponent<Enemy_Script>();
@@ -64,6 +66,8 @@ public class Player_Script : Actor
                 if (player_x == enScript.enemy_x && player_y - 1 == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
+                    enScript.healthSystem.TakeDamage(attack);
+                    movCount--;
                 }
                 else if (checkForCollision(player_x, player_y - 1, '#', mmScript.multidimensionalMap))
                 {
@@ -76,7 +80,7 @@ public class Player_Script : Actor
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_y--;
                     restartTileMap();                    
-                    Debug.Log("MovLeft: " + movCount);
+                    
                 }
             }
 
@@ -86,6 +90,8 @@ public class Player_Script : Actor
                 if (player_x == enScript.enemy_x && player_y + 1 == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
+                    enScript.healthSystem.TakeDamage(attack);
+                    movCount--;
                 }
                 else if (checkForCollision(player_x, player_y + 1, '#', mmScript.multidimensionalMap))
                 {
@@ -98,7 +104,7 @@ public class Player_Script : Actor
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_y++;
                     restartTileMap();                    
-                    Debug.Log("MovLeft: " + movCount);
+                    
                 }
             }
 
@@ -107,6 +113,8 @@ public class Player_Script : Actor
                 if (player_x - 1 == enScript.enemy_x && player_y == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
+                    enScript.healthSystem.TakeDamage(attack);
+                    movCount--;
                 }
                 else if (checkForCollision(player_x - 1, player_y, '#', mmScript.multidimensionalMap))
                 {
@@ -119,7 +127,7 @@ public class Player_Script : Actor
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_x--;
                     restartTileMap();                    
-                    Debug.Log("MovLeft: " + movCount); 
+                    
                 }
             }
 
@@ -128,6 +136,8 @@ public class Player_Script : Actor
                 if (player_x + 1 == enScript.enemy_x && player_y == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
+                    enScript.healthSystem.TakeDamage(attack);
+                    movCount--;
                 }
                 else if (checkForCollision(player_x + 1, player_y, '#', mmScript.multidimensionalMap))
                 {
@@ -140,7 +150,7 @@ public class Player_Script : Actor
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_x++;
                     restartTileMap();                    
-                    Debug.Log("MovLeft: " + movCount);
+                    
                 }
             }
 
@@ -158,8 +168,7 @@ public class Player_Script : Actor
     {
         turnTx.gameObject.SetActive(false);
         movCount = movCountMax;
-        enScript.enemyTurn = true;
-        Debug.Log("Enemy Turn");
+        enScript.enemyTurn = true;        
     }
 
     void restartTileMap() 

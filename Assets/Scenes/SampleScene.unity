@@ -153,10 +153,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myTilemap: {fileID: 2095890833}
-  wall: {fileID: 11400000, guid: ebb95796d2ec93f46a593d8034fbb55a, type: 2}
+  wall: {fileID: 11400000, guid: f25b6ca0b5c7fab49aadd361f77eb3df, type: 2}
+  wall2: {fileID: 11400000, guid: 24a118c4c42bdc94c921e0a22d2355be, type: 2}
+  wall3: {fileID: 11400000, guid: 4578d2151760a444fae5be108c023321, type: 2}
   block: {fileID: 11400000, guid: 503c478a898b81e47943f8a6766c01a8, type: 2}
   field: {fileID: 11400000, guid: a2dd13863cde22f40860398faf5a77ed, type: 2}
   player: {fileID: 11400000, guid: 656df9e9f777e3d4a85dcb503754957b, type: 2}
+  field2: {fileID: 11400000, guid: 7369813944678cc45a58a6277ac7f963, type: 2}
+  chest: {fileID: 11400000, guid: 107d8fc510cb71a46a01f9ff7f934c06, type: 2}
+  openChest: {fileID: 11400000, guid: 75f1510b2cd810648ae0d2d4d5209432, type: 2}
 --- !u!156049354 &415768473
 Grid:
   m_ObjectHideFlags: 0
@@ -714,6 +719,7 @@ MonoBehaviour:
   movCountMax: 2
   turnTx: {fileID: 740940517}
   statsUpdate: {fileID: 1776803561}
+  attack: 0
   lastCheckedHealth: 0
   lastCheckedXp: 0
   lastCheckedLevel: 0
@@ -1338,6 +1344,7 @@ MonoBehaviour:
   statsUpdate: {fileID: 1721564775}
   enemyHP: 0
   attack: 0
+  eLastCheckedHealth: 0
 --- !u!4 &2143194655
 Transform:
   m_ObjectHideFlags: 0

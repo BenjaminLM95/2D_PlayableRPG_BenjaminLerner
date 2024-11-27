@@ -1,7 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System; 
+using System;
+using JetBrains.Annotations;
 
 public class Enemy_Script : Actor
 {
@@ -25,13 +26,14 @@ public class Enemy_Script : Actor
     public TextMeshProUGUI statsUpdate;
     public System.Random rnd = new System.Random();
     public int enemyHP;
-    public int attack; 
+    public int attack;
+    public int eLastCheckedHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         enemy_x = 16;
-        enemy_y = 16;
+        enemy_y = 14;
         enemyHP = 5;
         attack = 3; 
         enemyMvs = enemyMvsMax; 
@@ -39,19 +41,28 @@ public class Enemy_Script : Actor
         plScript = p.GetComponent<Player_Script>();
         myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), enemy);
         enemyTurn = false; 
-        playerDir(); 
-        
+        playerDir();
+        healthSystem.setMaxHP(10);
+        healthSystem.resetGame(); 
     }
 
     // Update is called once per frame
     void Update()
-    {        
+    {
 
-        if (enemyTurn)
+        if (eLastCheckedHealth != healthSystem.hp )
+        {
+            eLastCheckedHealth = healthSystem.hp;            
+        }
+
+        
+
+        if (enemyTurn && healthSystem.hp > 0)
         {
             enTurnTx.gameObject.SetActive(true);
             Invoke("enemyMove", 1f);
             enemyMvs--;
+            System.Threading.Thread.Sleep(500);
 
         }
 
@@ -59,12 +70,15 @@ public class Enemy_Script : Actor
         {
             enemyMvs = enemyMvsMax;
             enemyTurn = false;
-            plScript.myTurn = true;          
-            enTurnTx.gameObject.SetActive(false);
-            
+            Invoke("playerTurn", 2f); 
         }
 
         statsUpdate.text = "Enemy HP: " + healthSystem.hp;
+
+        if(healthSystem.hp <= 0) 
+        {
+            myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), null);
+        }
     }
 
     public void checkForPlayerPosition() 
@@ -80,8 +94,8 @@ public class Enemy_Script : Actor
         myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), null);
         enemy_x += mvX;
         enemy_y += mvY;
-        myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), enemy);        
-        Debug.Log("enemy moves"); 
+        myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), enemy);     
+        
     }
     public void playerDir()
     {
@@ -137,7 +151,7 @@ public class Enemy_Script : Actor
             else
                 mvX = 0; 
 
-            Debug.Log(mvX + " , " + mvY);           
+                       
 
         }
 
@@ -145,9 +159,17 @@ public class Enemy_Script : Actor
         {
             mvX = 0;
             mvY = 0;
-            plScript.healthSystem.TakeDamage(attack); 
+            plScript.healthSystem.TakeDamage(attack);
+            plScript.checkForLife(); 
         }
 
+       
+    }
+
+    public void playerTurn() 
+    {
+        plScript.myTurn = true;
+        enTurnTx.gameObject.SetActive(false);
     }
 
 }

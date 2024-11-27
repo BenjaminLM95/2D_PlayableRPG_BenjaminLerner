@@ -16,6 +16,7 @@ public class Actor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (healthSystem.hp != lastCheckingForDeath)
         {
             lastCheckingForDeath = healthSystem.hp;
@@ -32,9 +33,27 @@ public class Actor : MonoBehaviour
 
             }
 
+        } */
+    }
+
+    public void checkForLife() 
+    {
+        if (healthSystem.hp != lastCheckingForDeath)
+        {
+            lastCheckingForDeath = healthSystem.hp;
+            if (healthSystem.hp <= 0)
+            {
+                if (healthSystem.lives > 0)
+                {
+                    healthSystem.Revive();
+                }
+                else
+                {
+
+                }
+
+            }
+
         }
-
-
-
     }
 }

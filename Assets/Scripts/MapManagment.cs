@@ -7,9 +7,14 @@ public class MapManagment : MonoBehaviour
 {
     public Tilemap myTilemap;
     public TileBase wall;
+    public TileBase wall2;
+    public TileBase wall3; 
     public TileBase block;
     public TileBase field;
     public TileBase player;
+    public TileBase field2;
+    public TileBase chest;
+    public TileBase openChest; 
     string mString;
     public char[,] multidimensionalMap = new char[30, 20];
 
@@ -52,7 +57,7 @@ public class MapManagment : MonoBehaviour
                     mapMatrix[i, j] = 'P';
 
                 }
-                else if ((j == height/3  || j == 2 * height / 3) && (i > width/5 && i < 4 * width / 5)) 
+                else if ((j == height/3 - 3 || j == 2 * height / 3 + 3) && (i > width/5 - 1 && i < 4 * width / 5 + 1)) 
                 {
                     mapMatrix[i, j] = '#'; 
                 }
@@ -144,4 +149,58 @@ public class MapManagment : MonoBehaviour
             }
         }
     }
+
+    public static int randomNumber(int a, int b)
+    {
+        // Generate a random number to later get a random character
+        System.Random random = new System.Random();
+        int rslt = random.Next(a, b);
+        return rslt;
+    }
+
+    char GenerateString()
+    {
+        // Generate the char at random
+        // '#' for walls, '@' for doors, '*' for field '%' for grass, '$' for grass2, '&' for a tree, 'k' for keys
+        char charElement;
+        int typeOfString = randomNumber(0, 100);
+
+        if (typeOfString < 35)
+        {
+            charElement = '*';
+        }
+        else if (typeOfString < 55)
+        {
+            charElement = '%';
+        }
+        else if (typeOfString < 75)
+        {
+            charElement = '$';
+        }
+        else if (typeOfString < 85)
+        {
+            charElement = 'k';
+           
+        }
+        else if (typeOfString < 86)
+        {
+            charElement = '#';
+        }
+        else if (typeOfString < 92)
+        {
+            charElement = '&';
+        }
+        else if (typeOfString < 100)
+        {
+            charElement = '@';
+        }
+        else
+        {
+            charElement = '*';
+        }
+
+
+        return charElement;
+    }
+
 }

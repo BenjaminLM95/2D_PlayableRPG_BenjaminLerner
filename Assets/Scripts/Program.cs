@@ -9,7 +9,7 @@ public class HealthSystem
     public int hpMax = 20; 
     public int hp = 0;
     public string healthStatus;
-    public int lives = 1;
+    public int lives = 2;
     // this variables for the time being Im not going to use it
     public int xp;
     public int level; 
@@ -27,6 +27,8 @@ public class HealthSystem
         {
             hp = hp - damage; 
         }
+        Debug.Log("Damage"); 
+        
     }
 
     public void Recover(int heal) 
@@ -111,6 +113,11 @@ public class HealthSystem
     public void resetGame() 
     {
         hp = hpMax; 
+    }
+
+    public void setMaxHP(int maxHp) 
+    {
+        hpMax = maxHp;        
     }
 
 }
