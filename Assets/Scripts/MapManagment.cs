@@ -14,11 +14,16 @@ public class MapManagment : MonoBehaviour
     public TileBase player;
     public TileBase field2;
     public TileBase chest;
-    public TileBase openChest; 
+    public TileBase openChest;
+    public TileBase water;
+    public TileBase food;
+    public TileBase diamond;
+    public TileBase gold; 
     string mString;
     public char[,] multidimensionalMap = new char[30, 20];
 
-
+    // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '+' for field2 'O' for chest, 'o' for open chest
+    // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +45,8 @@ public class MapManagment : MonoBehaviour
 
     public string GenerateMapString(int width, int height)
     {
-        // '#' for walls, '@' for doors, '*' for field '%' for grass, '&' for a tree
+        // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '+' for field2 'O' for chest, 'o' for open chest
+        // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
         // Creating a bidimensional array for the map to later convert it into a string
 
         char[,] mapMatrix = new char[width, height];
@@ -59,10 +65,14 @@ public class MapManagment : MonoBehaviour
                 }
                 else if ((j == height/3 - 3 || j == 2 * height / 3 + 3) && (i > width/5 - 1 && i < 4 * width / 5 + 1)) 
                 {
-                    mapMatrix[i, j] = '#'; 
+                    mapMatrix[i, j] = '@'; 
+                }
+                else if ((j > height / 3 - 3 && j < 2 * height / 3 + 3) && (i > width / 5 - 1 && i < 4 * width / 5 + 1)) 
+                {
+                    mapMatrix[i, j] = GenerateString();
                 }
                 else
-                    mapMatrix[i, j] = '*';     //mapMatrix[i, j] = GenerateString();
+                    mapMatrix[i, j] = '*';     
             }
         }
 
@@ -90,7 +100,8 @@ public class MapManagment : MonoBehaviour
     {
         // Split the char (string) to set it into the 2d array
         var lines = mapData.Split('\n');
-        // '#' for walls, '@' for doors, '*' for field '%' for grass, '$' for grass2, '&' for a tree
+        // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '&' for field2 'O' for chest, 'o' for open chest
+        // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
         for (int i = 0; i < lines.Length - 1; i++)
         {
 
@@ -101,17 +112,49 @@ public class MapManagment : MonoBehaviour
                     myTilemap.SetTile(new Vector3Int(j, i, 0), wall);
                     
                 }
+                else if (lines[i][j] == '@')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), wall2);
+                }
+                else if (lines[i][j] == 'D')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), wall3);
+                }
                 else if (lines[i][j] == '*')
                 {
                     myTilemap.SetTile(new Vector3Int(j, i, 0), field);
                 }
-                else if (lines[i][j] == '&')
+                else if (lines[i][j] == 'B')
                 {
                     myTilemap.SetTile(new Vector3Int(j, i, 0), block);
+                }
+                else if (lines[i][j] == '&')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), field2);
+                }
+                else if (lines[i][j] == 'O')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), chest);
+                }
+                else if (lines[i][j] == 'w')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), water);
+                }
+                else if (lines[i][j] == '$')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), gold);
+                }
+                else if (lines[i][j] == 'S')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), diamond);
                 }
                 else if (lines[i][j] == 'P')
                 {
                     myTilemap.SetTile(new Vector3Int(j, i, 0), field);
+                }
+                else if (lines[i][j] == 'f')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), food);
                 }
                 else
                 {
@@ -126,7 +169,8 @@ public class MapManagment : MonoBehaviour
     private void ConvertToMap(string sMap, char[,] daMap)
     {
         // Split the char (string) from a specific 2d array
-        // '#' for walls, '@' for doors, '*' for field '%' for grass, '$' for grass2, '&' for a tree, 'P' for players, '!' or '^' for magic doors
+        // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '&' for field2 'O' for chest, 'o' for open chest
+        // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
         var lines = sMap.Split('\n');
 
         for (int j = 0; j < daMap.GetLength(1); j++)
@@ -138,13 +182,49 @@ public class MapManagment : MonoBehaviour
                 {
                     daMap[i, j] = '#';
                 }
-                else if (lines[j][i] ==  '*')  // door
+                else if (lines[j][i] == '@') // wall2
+                {
+                    daMap[i, j] = '@';
+                }
+                else if (lines[j][i] == 'D') // Wall3
+                {
+                    daMap[i, j] = 'D';
+                }
+                else if (lines[j][i] == 'B') //Block
+                {
+                    daMap[i, j] = 'B';
+                }
+                else if (lines[j][i] ==  '*')  // field
                 {
                     daMap[i, j] = '*';
                 }
-                else if (lines[j][i] == '&') 
+                else if (lines[j][i] == '&')  //Field2
                 {
                     daMap[i, j] = '&';
+                }
+                else if (lines[j][i] == 'O') // Chest
+                {
+                    daMap[i, j] = 'O';
+                }
+                else if (lines[j][i] == 'w') //Water
+                {
+                    daMap[i, j] = 'w';
+                }
+                else if (lines[j][i] == 'S') //Diamond
+                {
+                    daMap[i, j] = 'S';
+                }
+                else if (lines[j][i] == '$') //Gold
+                {
+                    daMap[i, j] = '$';
+                }
+                else if (lines[j][i] == 'f') //Food
+                {
+                    daMap[i, j] = 'f';
+                }
+                else 
+                {
+                    daMap[i, j] = '*';
                 }
             }
         }
@@ -161,38 +241,51 @@ public class MapManagment : MonoBehaviour
     char GenerateString()
     {
         // Generate the char at random
-        // '#' for walls, '@' for doors, '*' for field '%' for grass, '$' for grass2, '&' for a tree, 'k' for keys
+        // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '&' for field2 'O' for chest, 'o' for open chest
+        // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
         char charElement;
         int typeOfString = randomNumber(0, 100);
 
-        if (typeOfString < 35)
+        if (typeOfString < 34)
         {
             charElement = '*';
         }
-        else if (typeOfString < 55)
-        {
-            charElement = '%';
-        }
-        else if (typeOfString < 75)
-        {
-            charElement = '$';
-        }
-        else if (typeOfString < 85)
-        {
-            charElement = 'k';
-           
-        }
-        else if (typeOfString < 86)
-        {
-            charElement = '#';
-        }
-        else if (typeOfString < 92)
+        else if (typeOfString < 68)
         {
             charElement = '&';
         }
-        else if (typeOfString < 100)
+        else if (typeOfString < 72)
         {
             charElement = '@';
+        }
+        else if (typeOfString < 76)
+        {
+            charElement = 'D';
+           
+        }
+        else if (typeOfString < 80)
+        {
+            charElement = 'B';
+        }
+        else if (typeOfString < 84)
+        {
+            charElement = 'O';
+        }
+        else if (typeOfString < 88)
+        {
+            charElement = 'w';
+        }
+        else if (typeOfString < 92)
+        {
+            charElement = 'S';
+        }
+        else if (typeOfString < 96)
+        {
+            charElement = '$';
+        }
+        else if (typeOfString < 100)
+        {
+            charElement = 'f';
         }
         else
         {

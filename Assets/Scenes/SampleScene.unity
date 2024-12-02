@@ -162,6 +162,10 @@ MonoBehaviour:
   field2: {fileID: 11400000, guid: 7369813944678cc45a58a6277ac7f963, type: 2}
   chest: {fileID: 11400000, guid: 107d8fc510cb71a46a01f9ff7f934c06, type: 2}
   openChest: {fileID: 11400000, guid: 75f1510b2cd810648ae0d2d4d5209432, type: 2}
+  water: {fileID: 11400000, guid: 0427e85e3edd1df47b67e9260511efd5, type: 2}
+  food: {fileID: 11400000, guid: fbe868f9d21db4f43b6e4a30cba945bd, type: 2}
+  diamond: {fileID: 11400000, guid: 7d702a45f55d18d4e84bfd5e50242a92, type: 2}
+  gold: {fileID: 11400000, guid: 6e1db6cf43ee63c44a2947b0f5360e4f, type: 2}
 --- !u!156049354 &415768473
 Grid:
   m_ObjectHideFlags: 0

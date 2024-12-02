@@ -32,7 +32,7 @@ public class Enemy_Script : Actor
     // Start is called before the first frame update
     void Start()
     {
-        enemy_x = 16;
+        enemy_x = 26;
         enemy_y = 14;
         enemyHP = 5;
         attack = 3; 
@@ -100,7 +100,7 @@ public class Enemy_Script : Actor
     public void playerDir()
     {
         checkForPlayerPosition();
-        int rNum = rnd.Next(0, 2); 
+        int rNum = rnd.Next(0, 2);
 
         if (enemy_x > plX)
         {
@@ -112,34 +112,38 @@ public class Enemy_Script : Actor
         }
         else
             mvX = 1;
-                
+
 
         if (enemy_y > plY)
         {
             mvY = -1;
         }
         else if (enemy_y == plY)
-            {
+        {
             mvY = 0;
         }
         else
         {
-            mvY = 1; 
+            mvY = 1;
         }
 
-                
-        if(mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '#')
+
+        if (mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '#' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '@' ||
+            mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'D' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'B')
         {
             mvX = 0;
-            if (mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '#')
+            if (mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '#' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '@' ||
+                mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'D' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'B')
                 mvY = 0;
 
         }
 
-        if (mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '#')
+        if (mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '#' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '@' || 
+            mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'D' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'B')
         {
             mvY = 0;
-            if (mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '#')
+            if (mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '#' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '@' || 
+                mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'D' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'B')
                 mvX = 0;
 
         }

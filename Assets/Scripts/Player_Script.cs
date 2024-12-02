@@ -52,13 +52,13 @@ public class Player_Script : Actor
             
         }
 
-        statsUpdate.text = healthSystem.ShowHUD(); 
+        statsUpdate.text = healthSystem.ShowHUD();
 
 
         if (myTurn)
         {
             turnTx.gameObject.SetActive(true);
-            turnTx.text = "Is your Turn. Movements left: " + movCount; 
+            turnTx.text = "Is your Turn. Movements left: " + movCount;
 
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
@@ -69,7 +69,9 @@ public class Player_Script : Actor
                     enScript.healthSystem.TakeDamage(attack);
                     movCount--;
                 }
-                else if (checkForCollision(player_x, player_y - 1, '#', mmScript.multidimensionalMap))
+                else if (checkForCollision(player_x, player_y - 1, '#', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y - 1, '@', mmScript.multidimensionalMap) 
+                    || checkForCollision(player_x, player_y - 1, 'D', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y - 1, 'B', mmScript.multidimensionalMap)
+                    || checkForCollision(player_x, player_y - 1, 'W', mmScript.multidimensionalMap))
                 {
                     Debug.Log("Colision");
 
@@ -93,7 +95,9 @@ public class Player_Script : Actor
                     enScript.healthSystem.TakeDamage(attack);
                     movCount--;
                 }
-                else if (checkForCollision(player_x, player_y + 1, '#', mmScript.multidimensionalMap))
+                else if (checkForCollision(player_x, player_y + 1, '#', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y + 1, '@', mmScript.multidimensionalMap) ||
+                    checkForCollision(player_x, player_y + 1, 'B', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y + 1, 'D', mmScript.multidimensionalMap) ||
+                    checkForCollision(player_x, player_y + 1, 'w', mmScript.multidimensionalMap))
                 {
                     Debug.Log("Colision");
 
@@ -116,7 +120,9 @@ public class Player_Script : Actor
                     enScript.healthSystem.TakeDamage(attack);
                     movCount--;
                 }
-                else if (checkForCollision(player_x - 1, player_y, '#', mmScript.multidimensionalMap))
+                else if (checkForCollision(player_x - 1, player_y, '#', mmScript.multidimensionalMap) || checkForCollision(player_x - 1, player_y, '@', mmScript.multidimensionalMap) ||
+                    checkForCollision(player_x - 1, player_y, 'D', mmScript.multidimensionalMap) || checkForCollision(player_x - 1, player_y, 'B', mmScript.multidimensionalMap) ||
+                    checkForCollision(player_x - 1, player_y, 'w', mmScript.multidimensionalMap))
                 {
                     Debug.Log("Colision");
 
@@ -139,7 +145,9 @@ public class Player_Script : Actor
                     enScript.healthSystem.TakeDamage(attack);
                     movCount--;
                 }
-                else if (checkForCollision(player_x + 1, player_y, '#', mmScript.multidimensionalMap))
+                else if (checkForCollision(player_x + 1, player_y, '#', mmScript.multidimensionalMap) || checkForCollision(player_x + 1, player_y, '@', mmScript.multidimensionalMap) ||
+                    checkForCollision(player_x + 1, player_y, 'D', mmScript.multidimensionalMap) || checkForCollision(player_x + 1, player_y, 'B', mmScript.multidimensionalMap) ||
+                    checkForCollision(player_x + 1, player_y, 'w', mmScript.multidimensionalMap))
                 {
                     Debug.Log("Colision");
 
