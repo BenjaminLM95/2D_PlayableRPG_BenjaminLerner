@@ -18,7 +18,20 @@ public class MapManagment : MonoBehaviour
     public TileBase water;
     public TileBase food;
     public TileBase diamond;
-    public TileBase gold; 
+    public TileBase gold;
+
+    public TileBase topLeftCorner;
+    public TileBase topRightCorner;
+    public TileBase topWalls;
+    public TileBase lowerLeftCorner;
+    public TileBase lowerRightCorner;
+    public TileBase lowerWalls;
+    public TileBase leftWalls;
+    public TileBase rightWalls;
+
+    // 't' for TLC, 'y' for TW, 'u' for TRC 'n' for Left Walls
+    // 'g' for LLC, 'h' for LW, 'j' for LRC 'm' for Right Walls
+
     string mString;
     public char[,] multidimensionalMap = new char[30, 20];
 
@@ -49,25 +62,40 @@ public class MapManagment : MonoBehaviour
         // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
         // Creating a bidimensional array for the map to later convert it into a string
 
+
         char[,] mapMatrix = new char[width, height];
 
         for (int j = 0; j < height; j++)
         {
             for (int i = 0; i < width; i++)
             {
-                if (i == 0 || j == 0 || i == width - 1 || j == height - 1)
-                    mapMatrix[i, j] = '#';  //1st rule: The borders should be walls
+                if (i == 0 && j == height - 1)
+                    mapMatrix[i, j] = 't';
+                else if (i == 0 && j == 0)
+                    mapMatrix[i, j] = 'g';
+                else if (i == width - 1 && j == 0)
+                    mapMatrix[i, j] = 'j';
+                else if (i == width - 1 && j == height - 1)
+                    mapMatrix[i, j] = 'u';
+                else if (i == 0 && j > 0 && j < height - 1)
+                    mapMatrix[i, j] = 'n';
+                else if (i == width - 1 && j > 0 && j < height - 1)
+                    mapMatrix[i, j] = 'm';
+                else if (i > 0 && i < width - 1 && j == 0)
+                    mapMatrix[i, j] = 'h';
+                else if (i > 0 && j < width - 1 && j == height - 1)
+                    mapMatrix[i, j] = 'y';
                 else if (i == width - 3 && j == 3)
                 {
                     //Where the player is
                     mapMatrix[i, j] = 'P';
 
                 }
-                else if ((j == height/3 - 3 || j == 2 * height / 3 + 3) && (i > width/5 - 1 && i < 4 * width / 5 + 1)) 
+                else if ((j == height / 3 - 3 || j == 2 * height / 3 + 3) && (i > width / 5 - 1 && i < 4 * width / 5 + 1))
                 {
-                    mapMatrix[i, j] = '@'; 
+                    mapMatrix[i, j] = '@';
                 }
-                else if ((j > height / 3 - 3 && j < 2 * height / 3 + 3) && (i > width / 5 - 1 && i < 4 * width / 5 + 1)) 
+                else if ((j > height / 3 - 3 && j < 2 * height / 3 + 3) && (i > width / 5 - 1 && i < 4 * width / 5 + 1))
                 {
                     mapMatrix[i, j] = GenerateString();
                 }
@@ -101,7 +129,10 @@ public class MapManagment : MonoBehaviour
         // Split the char (string) to set it into the 2d array
         var lines = mapData.Split('\n');
         // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '&' for field2 'O' for chest, 'o' for open chest
-        // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
+        // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy       
+        // 't' for TLC, 'y' for TW, 'u' for TRC 'n' for Left Walls
+        // 'g' for LLC, 'h' for LW, 'j' for LRC 'm' for Right Walls
+
         for (int i = 0; i < lines.Length - 1; i++)
         {
 
@@ -111,6 +142,38 @@ public class MapManagment : MonoBehaviour
                 {
                     myTilemap.SetTile(new Vector3Int(j, i, 0), wall);
                     
+                }
+                else if (lines[i][j] == 't')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), topLeftCorner);
+                }
+                else if (lines[i][j] == 'y')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), topWalls);
+                }
+                else if (lines[i][j] == 'u')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), topRightCorner);
+                }
+                else if (lines[i][j] == 'g')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), lowerLeftCorner);
+                }
+                else if (lines[i][j] == 'h')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), lowerWalls);
+                }
+                else if (lines[i][j] == 'j')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), lowerRightCorner);
+                }
+                else if (lines[i][j] == 'n')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), leftWalls);
+                }
+                else if (lines[i][j] == 'm')
+                {
+                    myTilemap.SetTile(new Vector3Int(j, i, 0), rightWalls);
                 }
                 else if (lines[i][j] == '@')
                 {
@@ -171,6 +234,8 @@ public class MapManagment : MonoBehaviour
         // Split the char (string) from a specific 2d array
         // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '&' for field2 'O' for chest, 'o' for open chest
         // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
+        // 't' for TLC, 'y' for TW, 'u' for TRC 'n' for Left Walls
+        // 'g' for LLC, 'h' for LW, 'j' for LRC 'm' for Right Walls
         var lines = sMap.Split('\n');
 
         for (int j = 0; j < daMap.GetLength(1); j++)
@@ -181,6 +246,38 @@ public class MapManagment : MonoBehaviour
                 if (lines[j][i] == '#') // wall
                 {
                     daMap[i, j] = '#';
+                }
+                else if (lines[j][i] == 't') // 
+                {
+                    daMap[i, j] = 't';
+                }
+                else if (lines[j][i] == 'y') // 
+                {
+                    daMap[i, j] = 'y';
+                }
+                else if (lines[j][i] == 'u') // 
+                {
+                    daMap[i, j] = 'u';
+                }
+                else if (lines[j][i] == 'n') // 
+                {
+                    daMap[i, j] = 'n';
+                }
+                else if (lines[j][i] == 'g') // 
+                {
+                    daMap[i, j] = 'g';
+                }
+                else if (lines[j][i] == 'h') // 
+                {
+                    daMap[i, j] = 'h';
+                }
+                else if (lines[j][i] == 'j') // 
+                {
+                    daMap[i, j] = 'j';
+                }
+                else if (lines[j][i] == 'm') // 
+                {
+                    daMap[i, j] = 'm';
                 }
                 else if (lines[j][i] == '@') // wall2
                 {
@@ -294,6 +391,12 @@ public class MapManagment : MonoBehaviour
 
 
         return charElement;
+    }
+
+    public void resetTileMap() 
+    {
+        myTilemap.ClearAllTiles();
+        ConvertMapToTilemap(convertMapToString(30, 20, multidimensionalMap));
     }
 
 }

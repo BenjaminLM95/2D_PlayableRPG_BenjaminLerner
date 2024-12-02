@@ -34,15 +34,15 @@ public class Enemy_Script : Actor
     {
         enemy_x = 26;
         enemy_y = 14;
-        enemyHP = 5;
-        attack = 3; 
+        enemyHP = 300;
+        attack = 75; 
         enemyMvs = enemyMvsMax; 
         mmScript = m.GetComponent<MapManagment>();
         plScript = p.GetComponent<Player_Script>();
         myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), enemy);
         enemyTurn = false; 
         playerDir();
-        healthSystem.setMaxHP(10);
+        healthSystem.setMaxHP(300);
         healthSystem.resetGame(); 
     }
 
@@ -129,24 +129,35 @@ public class Enemy_Script : Actor
 
 
         if (mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '#' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '@' ||
-            mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'D' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'B')
+            mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'D' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'B' ||
+            mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'O' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'o')
         {
             mvX = 0;
             if (mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '#' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '@' ||
-                mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'D' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'B')
+                mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'D' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'B' ||
+                mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'O' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'o')
                 mvY = 0;
 
         }
 
         if (mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '#' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == '@' || 
-            mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'D' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'B')
+            mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'D' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'B' ||
+            mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'O' || mmScript.multidimensionalMap[enemy_x, enemy_y + mvY] == 'o')
         {
             mvY = 0;
             if (mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '#' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '@' || 
-                mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'D' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'B')
+                mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'D' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'B' ||
+                 mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'O' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'o')
                 mvX = 0;
 
         }
+
+        if (is_a_borderWall(mmScript.multidimensionalMap[enemy_x + mvX, enemy_y + mvY])) 
+        {
+            mvX = 0;
+            mvY = 0; 
+        }
+
 
         if ((Mathf.Abs(mvX) == 1 && Mathf.Abs(mvY) == 1))
         {
@@ -167,6 +178,7 @@ public class Enemy_Script : Actor
             plScript.checkForLife(); 
         }
 
+
        
     }
 
@@ -176,4 +188,16 @@ public class Enemy_Script : Actor
         enTurnTx.gameObject.SetActive(false);
     }
 
+
+    public bool is_a_borderWall(char c)
+    {
+        bool result;
+
+        if (c == 't' || c == 'y' || c == 'u' || c == 'g' || c == 'h' || c == 'j' || c == 'n' || c == 'm')
+            result = true;
+        else
+            result = false;
+
+        return result;
+    }
 }

@@ -166,6 +166,14 @@ MonoBehaviour:
   food: {fileID: 11400000, guid: fbe868f9d21db4f43b6e4a30cba945bd, type: 2}
   diamond: {fileID: 11400000, guid: 7d702a45f55d18d4e84bfd5e50242a92, type: 2}
   gold: {fileID: 11400000, guid: 6e1db6cf43ee63c44a2947b0f5360e4f, type: 2}
+  topLeftCorner: {fileID: 11400000, guid: cc34207feaedcde41974d1aedef77390, type: 2}
+  topRightCorner: {fileID: 11400000, guid: bf2636dea536f5d43930ac32bf66d9ed, type: 2}
+  topWalls: {fileID: 11400000, guid: e9762eebf95cfd94f9c2998ce389d58e, type: 2}
+  lowerLeftCorner: {fileID: 11400000, guid: 61ddbf28786702f43acddc60aae0d970, type: 2}
+  lowerRightCorner: {fileID: 11400000, guid: 96a9c6c2f6aa60942b6a47f02fcb615f, type: 2}
+  lowerWalls: {fileID: 11400000, guid: 0b6e0e74f195d6f4bacf6e0b7af8c3db, type: 2}
+  leftWalls: {fileID: 11400000, guid: 437db571c6307454f80a06377d86372d, type: 2}
+  rightWalls: {fileID: 11400000, guid: 8cf576e723f6e26488f94008965772d9, type: 2}
 --- !u!156049354 &415768473
 Grid:
   m_ObjectHideFlags: 0
@@ -724,6 +732,8 @@ MonoBehaviour:
   turnTx: {fileID: 740940517}
   statsUpdate: {fileID: 1776803561}
   attack: 0
+  iAttack: 0
+  money: 0
   lastCheckedHealth: 0
   lastCheckedXp: 0
   lastCheckedLevel: 0

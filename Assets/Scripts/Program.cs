@@ -6,7 +6,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class HealthSystem
 {
     //Variables
-    public int hpMax = 20; 
+    public int hpMax = 500; 
     public int hp = 0;
     public string healthStatus;
     public int lives = 2;
