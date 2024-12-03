@@ -29,6 +29,8 @@ public class MapManagment : MonoBehaviour
     public TileBase leftWalls;
     public TileBase rightWalls;
 
+    public TextMeshProUGUI textMap;
+
     // 't' for TLC, 'y' for TW, 'u' for TRC 'n' for Left Walls
     // 'g' for LLC, 'h' for LW, 'j' for LRC 'm' for Right Walls
 
@@ -43,7 +45,7 @@ public class MapManagment : MonoBehaviour
         mString = GenerateMapString(30, 20);
         ConvertToMap(mString, multidimensionalMap);
         ConvertMapToTilemap(mString);
-        //stringMapText.text = mString;
+        textMap.text = mString;
 
 
 
