@@ -21,7 +21,7 @@ public class Player_Script : Actor
     public TextMeshProUGUI turnTx;
     public TextMeshProUGUI statsUpdate;
     public int attack;
-    public int iAttack; 
+    public int iAttack = 20; 
     public int money = 0; 
 
     public int lastCheckedHealth;
@@ -39,14 +39,14 @@ public class Player_Script : Actor
     {
         player_x = 3;
         player_y = 3;
-        attack = 25;
-        iAttack = 25; 
+        attack = iAttack;  
         myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), player);
         mmScript = m.GetComponent<MapManagment>();
         enScript = e.GetComponent<Enemy_Script>();
         movCount = movCountMax;
         //healthSystem.resetGame(); 
-        healthSystem.setHP(50); 
+        healthSystem.setHP(50);
+        healthSystem.setLevel(1); 
     }
 
     // Update is called once per frame
@@ -61,7 +61,7 @@ public class Player_Script : Actor
             
         }
 
-        attack = iAttack + (money / 2); 
+        attack = iAttack + (money / 2) + (3 * healthSystem.level); 
 
         statsUpdate.text = healthSystem.ShowHUD() + " Attack: " + attack + " Money: " + money;
 
@@ -375,10 +375,20 @@ public class Player_Script : Actor
 
         chestResult.gameObject.SetActive(true);
 
-        if(rnd < 50) 
+        if(rnd < 30) 
         {
             money++;
             chestResult.text = "You obtained 1 coin."; 
+        }
+        else if(rnd < 35) 
+        {
+            healthSystem.IncreaseXP(20);
+            chestResult.text = "Your experience has increased a little";
+        }
+        else if(rnd < 50)
+        {
+            healthSystem.IncreaseXP(50);
+            chestResult.text = "Your experience has increased"; 
         }
         else if (rnd < 60) 
         {

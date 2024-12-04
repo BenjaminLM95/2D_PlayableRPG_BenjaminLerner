@@ -30,6 +30,7 @@ public class MapManagment : MonoBehaviour
     public TileBase rightWalls;
 
     public TextMeshProUGUI textMap;
+    string pathToMyFile;
 
     // 't' for TLC, 'y' for TW, 'u' for TRC 'n' for Left Walls
     // 'g' for LLC, 'h' for LW, 'j' for LRC 'm' for Right Walls
@@ -45,9 +46,15 @@ public class MapManagment : MonoBehaviour
         mString = GenerateMapString(30, 20);
         ConvertToMap(mString, multidimensionalMap);
         ConvertMapToTilemap(mString);
-        textMap.text = mString;
+        textMap.text = mString;  
 
-
+        //To generate a map based on a text file
+        
+        /*pathToMyFile = $"{Application.dataPath}/TextMap/TextMapFile.txt";
+        ConvertToMap(System.IO.File.ReadAllText(pathToMyFile), multidimensionalMap);
+        LoadPremadeMap(pathToMyFile);
+        ConvertToMap(pathToMyFile, multidimensionalMap);
+        textMap.text = pathToMyFile; */ 
 
     }
 
@@ -137,7 +144,6 @@ public class MapManagment : MonoBehaviour
 
         for (int i = 0; i < lines.Length - 1; i++)
         {
-
             for (var j = 0; j < lines[i].Length - 1; j++)
             {
                 if (lines[i][j] == '#') // wall
@@ -240,10 +246,25 @@ public class MapManagment : MonoBehaviour
         // 'g' for LLC, 'h' for LW, 'j' for LRC 'm' for Right Walls
         var lines = sMap.Split('\n');
 
-        for (int j = 0; j < daMap.GetLength(1); j++)
+        Debug.Log($"damap length 0 {daMap.GetLength(0)}");
+        Debug.Log($"damap length 1 {daMap.GetLength(1)}");
+        Debug.Log($"actual file lines length {lines.Length}");
+        int maxX = 0;
+        foreach (var line in lines)
+        {
+            if (line.Length > maxX)
+            {
+                maxX = line.Length;
+                Debug.Log($"Found a new max line: [{line}], last character [{line[line.Length-1]}]");
+            }
+        }
+
+        Debug.Log($"actual biggest x on any line is {maxX}");
+
+        for (int j = 0; j < lines.Length; j++)
         {
 
-            for (int i = 0; i < daMap.GetLength(0); i++)
+            for (int i = 0; i < lines[j].Length - 1; i++)
             {
                 if (lines[j][i] == '#') // wall
                 {
@@ -323,7 +344,13 @@ public class MapManagment : MonoBehaviour
                 }
                 else 
                 {
-                    daMap[i, j] = '*';
+                    try
+                    {
+                        daMap[i, j] = '*';
+                    } catch (Exception ex)
+                    {
+                        Debug.Log($"ERROR ON I {i} J {j} error: {ex}");
+                    }
                 }
             }
         }
@@ -401,4 +428,11 @@ public class MapManagment : MonoBehaviour
         ConvertMapToTilemap(convertMapToString(30, 20, multidimensionalMap));
     }
 
+    public void LoadPremadeMap(string mapFilePath)
+    {
+        string myLines = System.IO.File.ReadAllText(mapFilePath);
+        ConvertMapToTilemap(myLines);
+
+
+    }
 }

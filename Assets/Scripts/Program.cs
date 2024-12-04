@@ -132,4 +132,12 @@ public class HealthSystem
         }
     }
 
+    public void setLevel(int lvl) 
+    {
+        if (lvl < 0)
+            lvl = 0;
+
+        level = lvl; 
+    }
+
 }

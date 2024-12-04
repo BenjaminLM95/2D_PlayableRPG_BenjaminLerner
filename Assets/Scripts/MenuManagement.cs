@@ -20,4 +20,9 @@ public class MenuManagement : MonoBehaviour
     {
         SceneManager.LoadScene("Instructions"); 
     }
+
+    public void quitGame()
+    {
+        Application.Quit();
+    }
 }
