@@ -78,7 +78,13 @@ public class Enemy_Script : Actor
         if(healthSystem.hp <= 0) 
         {
             myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), null);
+            plScript.youWin = true;
+            plScript.winOrLose.gameObject.SetActive(true);
+            plScript.winOrLose.text = "You Win!!";
+
         }
+
+
     }
 
     public void checkForPlayerPosition() 
@@ -175,7 +181,8 @@ public class Enemy_Script : Actor
             mvX = 0;
             mvY = 0;
             plScript.healthSystem.TakeDamage(attack);
-            plScript.checkForLife(); 
+            plScript.checkForLife();
+            plScript.beingAttack(); 
         }
 
 

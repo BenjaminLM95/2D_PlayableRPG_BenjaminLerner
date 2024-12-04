@@ -329,7 +329,7 @@ public class MapManagment : MonoBehaviour
         }
     }
 
-    public static int randomNumber(int a, int b)
+    public int randomNumber(int a, int b)
     {
         // Generate a random number to later get a random character
         System.Random random = new System.Random();

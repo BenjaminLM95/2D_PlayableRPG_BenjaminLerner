@@ -75,19 +75,19 @@ public class HealthSystem
     {
         string status;
 
-        if (health <= 5)
+        if (health <= 100)
         {
             status = "Imminent Danger";
         }
-        else if (health > 5 && health <= 10)
+        else if (health > 100 && health <= 200)
         {
             status = "Badly Hurt";
         }
-        else if (health > 10 && health <= 15)
+        else if (health > 200 && health <= 400)
         {
             status = "Hurt";
         }
-        else if (health > 15 && health <= 19)
+        else if (health > 400 && health <= 499)
         {
             status = "Heathy";
         }
@@ -118,6 +118,18 @@ public class HealthSystem
     public void setMaxHP(int maxHp) 
     {
         hpMax = maxHp;        
+    }
+
+    public void setHP(int amount) 
+    {
+        if(amount <= 0 || amount > hpMax) 
+        {
+            return;
+        }
+        else 
+        {
+            hp = amount; 
+        }
     }
 
 }

@@ -28,6 +28,11 @@ public class Player_Script : Actor
     public int lastCheckedXp;
     public int lastCheckedLevel;    
     public int checkLives;
+    public TextMeshProUGUI chestResult;
+    public TextMeshProUGUI winOrLose; 
+
+    public bool youWin = false;
+    public bool youLose = false; 
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +45,8 @@ public class Player_Script : Actor
         mmScript = m.GetComponent<MapManagment>();
         enScript = e.GetComponent<Enemy_Script>();
         movCount = movCountMax;
-        healthSystem.resetGame(); 
+        //healthSystem.resetGame(); 
+        healthSystem.setHP(50); 
     }
 
     // Update is called once per frame
@@ -65,13 +71,14 @@ public class Player_Script : Actor
             turnTx.gameObject.SetActive(true);
             turnTx.text = "Is your Turn. Movements left: " + movCount;
 
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && (!youLose || !youWin))
             {
                 // The player moves down
                 if (player_x == enScript.enemy_x && player_y - 1 == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
                     enScript.healthSystem.TakeDamage(attack);
+                    youAttack();
                     movCount--;
                 }
                 else if (checkForCollision(player_x, player_y - 1, '#', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y - 1, '@', mmScript.multidimensionalMap)
@@ -98,7 +105,16 @@ public class Player_Script : Actor
                 else if (checkForCollision(player_x, player_y - 1, 'S', mmScript.multidimensionalMap))
                 {
                     money += 5;  
-                    consumeItem(player_x, player_y);
+                    consumeItem(player_x, player_y - 1);
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_y--;
+                    restartTileMap();
+                    movCount--;
+                }
+                else if (checkForCollision(player_x, player_y - 1, 'f', mmScript.multidimensionalMap))
+                {
+                    healthSystem.Recover(30);
+                    consumeItem(player_x, player_y - 1);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
                     player_y--;
                     restartTileMap();
@@ -116,13 +132,14 @@ public class Player_Script : Actor
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) && (!youLose || !youWin))
             {
                 // The player moves up
                 if (player_x == enScript.enemy_x && player_y + 1 == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
                     enScript.healthSystem.TakeDamage(attack);
+                    youAttack();
                     movCount--;
                 }
                 else if (checkForCollision(player_x, player_y + 1, '#', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y + 1, '@', mmScript.multidimensionalMap) ||
@@ -155,6 +172,15 @@ public class Player_Script : Actor
                     restartTileMap();
                     movCount--;
                 }
+                else if (checkForCollision(player_x, player_y + 1, 'f', mmScript.multidimensionalMap))
+                {
+                    healthSystem.Recover(30);
+                    consumeItem(player_x, player_y + 1);
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_y++;
+                    restartTileMap();
+                    movCount--;
+                }
                 else if (is_a_borderWall(mmScript.multidimensionalMap[player_x, player_y + 1]))
                     Debug.Log("Border");
                 else
@@ -167,12 +193,13 @@ public class Player_Script : Actor
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) && (!youLose || !youWin))
             {
                 if (player_x - 1 == enScript.enemy_x && player_y == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
                     enScript.healthSystem.TakeDamage(attack);
+                    youAttack();
                     movCount--;
                 }
                 else if (checkForCollision(player_x - 1, player_y, '#', mmScript.multidimensionalMap) || checkForCollision(player_x - 1, player_y, '@', mmScript.multidimensionalMap) ||
@@ -205,6 +232,15 @@ public class Player_Script : Actor
                     restartTileMap();
                     movCount--;
                 }
+                else if (checkForCollision(player_x - 1, player_y, 'f', mmScript.multidimensionalMap))
+                {
+                    healthSystem.Recover(30);
+                    consumeItem(player_x - 1, player_y);
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_x--;
+                    restartTileMap();
+                    movCount--;
+                }
                 else if (is_a_borderWall(mmScript.multidimensionalMap[player_x - 1, player_y]))
                     Debug.Log("Border");
                 else
@@ -216,12 +252,13 @@ public class Player_Script : Actor
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) && (!youLose || !youWin))
             {
                 if (player_x + 1 == enScript.enemy_x && player_y == enScript.enemy_y)
                 {
                     Debug.Log("Enemy");
                     enScript.healthSystem.TakeDamage(attack);
+                    youAttack(); 
                     movCount--;
                 }
                 else if (checkForCollision(player_x + 1, player_y, '#', mmScript.multidimensionalMap) || checkForCollision(player_x + 1, player_y, '@', mmScript.multidimensionalMap) ||
@@ -254,6 +291,15 @@ public class Player_Script : Actor
                     restartTileMap();
                     movCount--;
                 }
+                else if (checkForCollision(player_x + 1, player_y, 'f', mmScript.multidimensionalMap))
+                {
+                    healthSystem.Recover(30);
+                    consumeItem(player_x + 1, player_y);
+                    myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
+                    player_x++;
+                    restartTileMap();
+                    movCount--;
+                }
                 else if (is_a_borderWall(mmScript.multidimensionalMap[player_x + 1, player_y]))
                     Debug.Log("Border");
                 else
@@ -272,8 +318,14 @@ public class Player_Script : Actor
                 Invoke("DelayedSetEnemyTurn", 0.5f);
             }
 
-        }               
+        }
 
+        if (healthSystem.hp <= 0 && healthSystem.lives <= 0)
+        {
+            youLose = true;
+            winOrLose.gameObject.SetActive(true);
+            winOrLose.text = "You Lose!!"; 
+        }
     }
 
     public void DelayedSetEnemyTurn()
@@ -319,6 +371,43 @@ public class Player_Script : Actor
     {
         myTilemap.SetTile(new Vector3Int(x, y, 0), null);
         myTilemap.SetTile(new Vector3Int(x, y, 0), mmScript.openChest);
+        int rnd = mmScript.randomNumber(0, 100); 
+
+        chestResult.gameObject.SetActive(true);
+
+        if(rnd < 50) 
+        {
+            money++;
+            chestResult.text = "You obtained 1 coin."; 
+        }
+        else if (rnd < 60) 
+        {
+            money += 5;
+            chestResult.text = "You obtained 5 coin.";
+        }
+        else if (rnd < 70) 
+        {
+            iAttack += 5;
+            chestResult.text = "Your attack increased by 5";
+        }
+        else if (rnd < 95) 
+        {
+            healthSystem.Recover(30);
+            chestResult.text = "You recovered 30 hp";
+        }
+        else if (rnd < 99) 
+        {
+            healthSystem.Recover(100);
+            chestResult.text = "You recovered 100 hp";
+        }
+        else if (rnd < 100) 
+        {
+            healthSystem.Recover(healthSystem.hpMax);
+            chestResult.text = "You fully restored your hp";
+        }
+
+        Invoke("desactivateChestResult", 5f); 
+    
     }
 
     private void consumeItem(int x, int y) 
@@ -327,5 +416,24 @@ public class Player_Script : Actor
         myTilemap.SetTile(new Vector3Int(x, y, 0), mmScript.field);
     }
 
+    private void desactivateChestResult() 
+    {
+        chestResult.gameObject.SetActive(false);
+    }
+
+    public void beingAttack() 
+    {
+        chestResult.gameObject.SetActive(true);
+        chestResult.text = "You have been attacked";
+        Invoke("desactivateChestResult", 3f);
+
+    }
+
+    public void youAttack()
+    {
+        chestResult.gameObject.SetActive(true);
+        chestResult.text = "You attacked the enemy";
+        Invoke("desactivateChestResult", 3f);
+    }
 
 }
