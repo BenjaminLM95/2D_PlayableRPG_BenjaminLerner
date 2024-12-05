@@ -42,7 +42,7 @@ public class Enemy_Script : Actor
         myTilemap.SetTile(new Vector3Int(enemy_x, enemy_y, 1), enemy);
         enemyTurn = false; 
         playerDir();
-        healthSystem.setMaxHP(300);
+        healthSystem.setMaxHP(500);
         healthSystem.resetGame(); 
     }
 

@@ -21,7 +21,7 @@ public class Player_Script : Actor
     public TextMeshProUGUI turnTx;
     public TextMeshProUGUI statsUpdate;
     public int attack;
-    public int iAttack = 20; 
+    public int iAttack;
     public int money = 0; 
 
     public int lastCheckedHealth;
@@ -39,13 +39,14 @@ public class Player_Script : Actor
     {
         player_x = 3;
         player_y = 3;
+        iAttack = 20; 
         attack = iAttack;  
         myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), player);
         mmScript = m.GetComponent<MapManagment>();
         enScript = e.GetComponent<Enemy_Script>();
         movCount = movCountMax;
         //healthSystem.resetGame(); 
-        healthSystem.setHP(50);
+        healthSystem.setHP(500);
         healthSystem.setLevel(1); 
     }
 
