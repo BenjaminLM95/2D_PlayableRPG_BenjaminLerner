@@ -69,8 +69,8 @@ public class MapManagment : MonoBehaviour
     {
         // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '+' for field2 'O' for chest, 'o' for open chest
         // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy
-        // Creating a bidimensional array for the map to later convert it into a string
 
+        // Creating a bidimensional array for the map to later convert it into a string
 
         char[,] mapMatrix = new char[width, height];
 
@@ -137,6 +137,8 @@ public class MapManagment : MonoBehaviour
     {
         // Split the char (string) to set it into the 2d array
         var lines = mapData.Split('\n');
+
+
         // '#' for walls, '@' for walls2, 'D' for wall3, 'B' for block, '*' for field, '&' for field2 'O' for chest, 'o' for open chest
         // 'w' for water, 'S' for diamond, '$' for gold, 'f' food, 'P' for player, 'E' for enemy       
         // 't' for TLC, 'y' for TW, 'u' for TRC 'n' for Left Walls
@@ -246,7 +248,7 @@ public class MapManagment : MonoBehaviour
         // 'g' for LLC, 'h' for LW, 'j' for LRC 'm' for Right Walls
         var lines = sMap.Split('\n');
 
-        Debug.Log($"damap length 0 {daMap.GetLength(0)}");
+        /*Debug.Log($"damap length 0 {daMap.GetLength(0)}");
         Debug.Log($"damap length 1 {daMap.GetLength(1)}");
         Debug.Log($"actual file lines length {lines.Length}");
         int maxX = 0;
@@ -259,7 +261,7 @@ public class MapManagment : MonoBehaviour
             }
         }
 
-        Debug.Log($"actual biggest x on any line is {maxX}");
+        Debug.Log($"actual biggest x on any line is {maxX}");  */
 
         for (int j = 0; j < lines.Length; j++)
         {
@@ -270,35 +272,35 @@ public class MapManagment : MonoBehaviour
                 {
                     daMap[i, j] = '#';
                 }
-                else if (lines[j][i] == 't') // 
+                else if (lines[j][i] == 't') // Top Left Corner Wall
                 {
                     daMap[i, j] = 't';
                 }
-                else if (lines[j][i] == 'y') // 
+                else if (lines[j][i] == 'y') // Top Wall
                 {
                     daMap[i, j] = 'y';
                 }
-                else if (lines[j][i] == 'u') // 
+                else if (lines[j][i] == 'u') // Top Right Corner Wall
                 {
                     daMap[i, j] = 'u';
                 }
-                else if (lines[j][i] == 'n') // 
+                else if (lines[j][i] == 'n') // Left Wall
                 {
                     daMap[i, j] = 'n';
                 }
-                else if (lines[j][i] == 'g') // 
+                else if (lines[j][i] == 'g') // Low Left Corner Wall
                 {
                     daMap[i, j] = 'g';
                 }
-                else if (lines[j][i] == 'h') // 
+                else if (lines[j][i] == 'h') // Low Wall
                 {
                     daMap[i, j] = 'h';
                 }
-                else if (lines[j][i] == 'j') // 
+                else if (lines[j][i] == 'j') // Low Right Corner Wall
                 {
                     daMap[i, j] = 'j';
                 }
-                else if (lines[j][i] == 'm') // 
+                else if (lines[j][i] == 'm') // Right Wall
                 {
                     daMap[i, j] = 'm';
                 }

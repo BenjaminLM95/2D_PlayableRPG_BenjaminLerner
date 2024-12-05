@@ -10,14 +10,14 @@ public class Actor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //The game start with the default values
         healthSystem.resetGame(); 
     }
 
-   
-    
-
+       
     public void checkForLife() 
     {
+        //Check for the hp, and revives if the player or enemy has more than 1 life (The enemy only has 1 life)
         if (healthSystem.hp != lastCheckingForDeath)
         {
             lastCheckingForDeath = healthSystem.hp;

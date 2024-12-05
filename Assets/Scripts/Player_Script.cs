@@ -60,7 +60,7 @@ public class Player_Script : Actor
             lastCheckedXp = healthSystem.xp;    
             
         }
-
+        //Calculate the attack value
         attack = iAttack + (money / 2) + (3 * healthSystem.level); 
 
         statsUpdate.text = healthSystem.ShowHUD() + " Attack: " + attack + " Money: " + money;
@@ -76,16 +76,16 @@ public class Player_Script : Actor
                 // The player moves down
                 if (player_x == enScript.enemy_x && player_y - 1 == enScript.enemy_y)
                 {
-                    Debug.Log("Enemy");
+                    //When the player moves to the enemy, attack
                     enScript.healthSystem.TakeDamage(attack);
                     youAttack();
                     movCount--;
                 }
                 else if (checkForCollision(player_x, player_y - 1, '#', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y - 1, '@', mmScript.multidimensionalMap)
                     || checkForCollision(player_x, player_y - 1, 'D', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y - 1, 'B', mmScript.multidimensionalMap)
-                    || checkForCollision(player_x, player_y - 1, 'W', mmScript.multidimensionalMap))
+                    || checkForCollision(player_x, player_y - 1, 'W', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y - 1, 'o', mmScript.multidimensionalMap))
                 {
-                    Debug.Log("Colision");
+                    
 
                 }
                 else if (checkForCollision(player_x, player_y - 1, 'O', mmScript.multidimensionalMap))
@@ -95,6 +95,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x, player_y - 1, '$', mmScript.multidimensionalMap))
                 {
+                    //Get a coin (mean, 1 money)
                     money++;
                     consumeItem(player_x, player_y - 1);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -104,6 +105,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x, player_y - 1, 'S', mmScript.multidimensionalMap))
                 {
+                    //Get a diamond (mean, 5 coin)
                     money += 5;  
                     consumeItem(player_x, player_y - 1);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -113,6 +115,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x, player_y - 1, 'f', mmScript.multidimensionalMap))
                 {
+                    //Eats food
                     healthSystem.Recover(30);
                     consumeItem(player_x, player_y - 1);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -137,14 +140,14 @@ public class Player_Script : Actor
                 // The player moves up
                 if (player_x == enScript.enemy_x && player_y + 1 == enScript.enemy_y)
                 {
-                    Debug.Log("Enemy");
+                    //When the player moves to the enemy, attack
                     enScript.healthSystem.TakeDamage(attack);
                     youAttack();
                     movCount--;
                 }
                 else if (checkForCollision(player_x, player_y + 1, '#', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y + 1, '@', mmScript.multidimensionalMap) ||
                     checkForCollision(player_x, player_y + 1, 'B', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y + 1, 'D', mmScript.multidimensionalMap) ||
-                    checkForCollision(player_x, player_y + 1, 'w', mmScript.multidimensionalMap))
+                    checkForCollision(player_x, player_y + 1, 'w', mmScript.multidimensionalMap) || checkForCollision(player_x, player_y + 1, 'o', mmScript.multidimensionalMap))
                 {
                     Debug.Log("Colision");
 
@@ -156,6 +159,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x, player_y + 1, '$', mmScript.multidimensionalMap)) 
                 {
+                    //Get a coin (mean, 1 money)
                     money++;
                     consumeItem(player_x, player_y + 1);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -165,6 +169,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x, player_y + 1, 'S', mmScript.multidimensionalMap))
                 {
+                    //Get a diamond (mean, 5 coin)
                     money += 5;
                     consumeItem(player_x, player_y + 1);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -174,6 +179,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x, player_y + 1, 'f', mmScript.multidimensionalMap))
                 {
+                    //Eats food
                     healthSystem.Recover(30);
                     consumeItem(player_x, player_y + 1);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -197,14 +203,14 @@ public class Player_Script : Actor
             {
                 if (player_x - 1 == enScript.enemy_x && player_y == enScript.enemy_y)
                 {
-                    Debug.Log("Enemy");
+                    //When the player moves to the enemy, attack
                     enScript.healthSystem.TakeDamage(attack);
                     youAttack();
                     movCount--;
                 }
                 else if (checkForCollision(player_x - 1, player_y, '#', mmScript.multidimensionalMap) || checkForCollision(player_x - 1, player_y, '@', mmScript.multidimensionalMap) ||
                     checkForCollision(player_x - 1, player_y, 'D', mmScript.multidimensionalMap) || checkForCollision(player_x - 1, player_y, 'B', mmScript.multidimensionalMap) ||
-                    checkForCollision(player_x - 1, player_y, 'w', mmScript.multidimensionalMap))
+                    checkForCollision(player_x - 1, player_y, 'w', mmScript.multidimensionalMap) || checkForCollision(player_x - 1, player_y, 'o', mmScript.multidimensionalMap))
                 {
                     Debug.Log("Colision");
 
@@ -216,6 +222,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x - 1, player_y, '$', mmScript.multidimensionalMap))
                 {
+                    //Get a coin (mean, 1 money)
                     money++;
                     consumeItem(player_x - 1, player_y);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -225,6 +232,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x - 1, player_y, 'S', mmScript.multidimensionalMap))
                 {
+                    //Get a diamond (mean, 5 coin)
                     money += 5;
                     consumeItem(player_x - 1, player_y);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -234,6 +242,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x - 1, player_y, 'f', mmScript.multidimensionalMap))
                 {
+                    //Eats food
                     healthSystem.Recover(30);
                     consumeItem(player_x - 1, player_y);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -256,14 +265,14 @@ public class Player_Script : Actor
             {
                 if (player_x + 1 == enScript.enemy_x && player_y == enScript.enemy_y)
                 {
-                    Debug.Log("Enemy");
+                    //When the player moves to the enemy, attack
                     enScript.healthSystem.TakeDamage(attack);
                     youAttack(); 
                     movCount--;
                 }
                 else if (checkForCollision(player_x + 1, player_y, '#', mmScript.multidimensionalMap) || checkForCollision(player_x + 1, player_y, '@', mmScript.multidimensionalMap) ||
                     checkForCollision(player_x + 1, player_y, 'D', mmScript.multidimensionalMap) || checkForCollision(player_x + 1, player_y, 'B', mmScript.multidimensionalMap) ||
-                    checkForCollision(player_x + 1, player_y, 'w', mmScript.multidimensionalMap))
+                    checkForCollision(player_x + 1, player_y, 'w', mmScript.multidimensionalMap) || checkForCollision(player_x + 1, player_y, 'o', mmScript.multidimensionalMap))
                 {
                     Debug.Log("Colision");
 
@@ -275,6 +284,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x + 1, player_y, '$', mmScript.multidimensionalMap))
                 {
+                    //Get a coin (mean, 1 money)
                     money++;
                     consumeItem(player_x + 1, player_y);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -284,6 +294,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x + 1, player_y, 'S', mmScript.multidimensionalMap))
                 {
+                    //Get a diamond (mean, 5 coin)
                     money += 5;
                     consumeItem(player_x + 1, player_y);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -293,6 +304,7 @@ public class Player_Script : Actor
                 }
                 else if (checkForCollision(player_x + 1, player_y, 'f', mmScript.multidimensionalMap))
                 {
+                    //Eats food
                     healthSystem.Recover(30);
                     consumeItem(player_x + 1, player_y);
                     myTilemap.SetTile(new Vector3Int(player_x, player_y, 1), null);
@@ -314,6 +326,7 @@ public class Player_Script : Actor
 
             if (movCount <= 0)
             {
+                //Turn over when there is no movement left
                 myTurn = false;
                 Invoke("DelayedSetEnemyTurn", 0.5f);
             }
@@ -330,6 +343,7 @@ public class Player_Script : Actor
 
     public void DelayedSetEnemyTurn()
     {
+        //Announce the enemy turn
         turnTx.gameObject.SetActive(false);
         movCount = movCountMax;
         enScript.enemyTurn = true;        
@@ -371,10 +385,11 @@ public class Player_Script : Actor
     {
         myTilemap.SetTile(new Vector3Int(x, y, 0), null);
         myTilemap.SetTile(new Vector3Int(x, y, 0), mmScript.openChest);
+        mmScript.multidimensionalMap[x, y] = 'o'; 
         int rnd = mmScript.randomNumber(0, 100); 
 
         chestResult.gameObject.SetActive(true);
-
+        //Set what you get by opening the chest by random
         if(rnd < 30) 
         {
             money++;
@@ -400,10 +415,15 @@ public class Player_Script : Actor
             iAttack += 5;
             chestResult.text = "Your attack increased by 5";
         }
-        else if (rnd < 95) 
+        else if (rnd < 93) 
         {
             healthSystem.Recover(30);
             chestResult.text = "You recovered 30 hp";
+        }
+        else if (rnd < 95) 
+        {
+            healthSystem.increaseLife();
+            chestResult.text = "Your live increased by 1"; 
         }
         else if (rnd < 99) 
         {
@@ -433,6 +453,7 @@ public class Player_Script : Actor
 
     public void beingAttack() 
     {
+        //When the enemy attacks you
         chestResult.gameObject.SetActive(true);
         chestResult.text = "You have been attacked";
         Invoke("desactivateChestResult", 3f);
@@ -441,6 +462,7 @@ public class Player_Script : Actor
 
     public void youAttack()
     {
+        //When you attack
         chestResult.gameObject.SetActive(true);
         chestResult.text = "You attacked the enemy";
         Invoke("desactivateChestResult", 3f);

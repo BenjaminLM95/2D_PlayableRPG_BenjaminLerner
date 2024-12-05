@@ -59,6 +59,7 @@ public class Enemy_Script : Actor
 
         if (enemyTurn && healthSystem.hp > 0)
         {
+            //Enemy only moves when its hp is greater than 0
             enTurnTx.gameObject.SetActive(true);
             Invoke("enemyMove", 1f);
             enemyMvs--;
@@ -89,6 +90,7 @@ public class Enemy_Script : Actor
 
     public void checkForPlayerPosition() 
     {
+        //Get the position of the player
         plX = plScript.player_x;
         plY = plScript.player_y; 
 
@@ -108,31 +110,92 @@ public class Enemy_Script : Actor
         checkForPlayerPosition();
         int rNum = rnd.Next(0, 2);
 
+        //Porcentages of each direction the enemy will move. Only is necessary to know the first two
+        int LeftMv;
+        int noXMv;
+        //int RightMv;
+        int UpMv;
+        int noYMv;
+        //int DownMv;
+
+        int rndX = mmScript.randomNumber(0, 100);
+        int rndY = mmScript.randomNumber(0, 100);
+
+        //Getting by random if the enemy will move right or left, having more chance to go to the position the player is
+
         if (enemy_x > plX)
         {
-            mvX = -1;
+            LeftMv = 80;
+            noXMv = 10;
+            //RightMv = 10;
         }
         else if (enemy_x == plX)
         {
-            mvX = 0;
+            LeftMv = 10;
+            noXMv = 80;
+            //RightMv = 10;
+        }
+        else  
+        {
+            LeftMv = 10;
+            noXMv = 10;
+            //RightMv = 80;
+        }
+        
+
+        if(rndX < LeftMv) 
+        {
+            mvX = -1;
+        }
+        else if(rndX < LeftMv + noXMv) 
+        {
+            mvX = 0; 
+        }
+        else if(rndX < 100) 
+        {
+            mvX = 1; 
         }
         else
-            mvX = 1;
+            mvX = 0;
 
+        //Getting by random if the enemy will move up or down, having more chance to go to the position the player is
 
         if (enemy_y > plY)
         {
-            mvY = -1;
+            UpMv =80;
+            noYMv = 10;
+            //DownMv = 10;
         }
         else if (enemy_y == plY)
         {
-            mvY = 0;
+            UpMv = 10;
+            noYMv = 80;
+            //DownMv = 10;
         }
         else
         {
-            mvY = 1;
+            UpMv = 10;
+            noYMv = 10;
+            //DownMv = 80; 
         }
 
+        if (rndY < UpMv)
+        {
+            mvY = -1;
+        }
+        else if (rndY < UpMv + noYMv)
+        {
+            mvY = 0;
+        }
+        else if (rndY < 100)
+        {
+            mvY = 1;
+        }
+        else
+            mvY = 0;
+        
+
+        // Checking for collisions
 
         if (mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '#' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == '@' ||
             mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'D' || mmScript.multidimensionalMap[enemy_x + mvX, enemy_y] == 'B' ||
@@ -164,6 +227,7 @@ public class Enemy_Script : Actor
             mvY = 0; 
         }
 
+        // This doesn't let the enemy to make two moves as a one  (When he has for example (+1, -1) as a movement 
 
         if ((Mathf.Abs(mvX) == 1 && Mathf.Abs(mvY) == 1))
         {
@@ -176,6 +240,7 @@ public class Enemy_Script : Actor
 
         }
 
+        //The enemy attack the player when moves to the player's position
         if((enemy_x + mvX == plX) && (enemy_y + mvY == plY)) 
         {
             mvX = 0;

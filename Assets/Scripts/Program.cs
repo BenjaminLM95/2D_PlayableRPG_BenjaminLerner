@@ -16,6 +16,8 @@ public class HealthSystem
 
     public void TakeDamage(int damage) 
     {
+        //Implement the damage logic. Can't be negative and you can't get a negative hp as a result
+
         if (damage < 0)
             damage = 0; 
 
@@ -26,8 +28,7 @@ public class HealthSystem
         else
         {
             hp = hp - damage; 
-        }
-        Debug.Log("Damage"); 
+        }        
         
     }
 
@@ -73,6 +74,7 @@ public class HealthSystem
 
     public string GetStatusHealth(int health)
     {
+        //Indicate your health status
         string status;
 
         if (health <= 100)
@@ -112,16 +114,19 @@ public class HealthSystem
     }
     public void resetGame() 
     {
+        //Return to default values
         hp = hpMax; 
     }
 
     public void setMaxHP(int maxHp) 
     {
+        //Set your max hp
         hpMax = maxHp;        
     }
 
     public void setHP(int amount) 
     {
+        //Set your hp
         if(amount <= 0 || amount > hpMax) 
         {
             return;
@@ -134,10 +139,17 @@ public class HealthSystem
 
     public void setLevel(int lvl) 
     {
+        //Set the level
         if (lvl < 0)
             lvl = 0;
 
         level = lvl; 
+    }
+
+    public void increaseLife() 
+    {
+        //Increase the life by one
+        lives++; 
     }
 
 }
